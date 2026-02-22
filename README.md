@@ -1,16 +1,67 @@
-# React + Vite
+# Mwandi's Décor — Event Decoration Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Business website for an event decoration company. Built with React + Vite, Tailwind CSS v4, React Router, and EmailJS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## React Compiler
+- React 18 + Vite
+- Tailwind CSS v4
+- React Router v6
+- EmailJS (contact form)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm install @emailjs/browser
+cp .env.example .env   # fill in your EmailJS keys
+npm run dev
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_EMAILJS_SERVICE_ID=service_xxxxxxx
+VITE_EMAILJS_TEMPLATE_ID=template_xxxxxxx
+VITE_EMAILJS_PUBLIC_KEY=xxxxxxxxxxxxxxxxxxxx
+```
+
+Get these from [emailjs.com](https://www.emailjs.com) → your dashboard.
+Add your domain to EmailJS allowed origins before deploying.
+
+---
+
+## Deployment
+
+Push to GitHub, import on Vercel. Add the three `VITE_EMAILJS_*` variables in Vercel → Settings → Environment Variables.
+
+When the owner connects a custom domain — add it to Vercel and to EmailJS allowed origins. No code changes needed.
+
+---
+
+## Updating Content
+
+**Everything lives in `src/data/siteData.js`.**
+
+- Add a portfolio event → add an object to `PORTFOLIO_ITEMS`
+- Add a service → add an object to `SERVICES`
+- Update contact details, testimonials, footer links → it's all in there
+
+No component changes needed for content updates.
+
+---
+
+## Routes
+
+| Route | Description |
+|---|---|
+| `/` | Landing page |
+| `/portfolio` | Full gallery with filters and shareable URLs |

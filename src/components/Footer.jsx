@@ -36,7 +36,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="sm:col-span-2 lg:col-span-1">
           <div className="font-display text-[22px] tracking-[4px] uppercase text-white mb-5">
-            Élume <span className="text-gold-light">Décor</span>
+            Mwandi's <span className="text-gold-light">Décor</span>
           </div>
           <p className="text-[13px] text-white/35 leading-relaxed mb-8">{tagline}</p>
           <div className="flex gap-3">
