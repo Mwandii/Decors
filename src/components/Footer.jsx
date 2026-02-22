@@ -31,7 +31,7 @@ export default function Footer() {
     <footer className="bg-dark px-6 lg:px-16 pt-16 pb-8">
 
       {/* Top grid */}
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-white/[0.07]">
+      <div className="max-w-300 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-white/[0.07]">
 
         {/* Brand */}
         <div className="sm:col-span-2 lg:col-span-1">
@@ -76,7 +76,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 pt-7">
+      <div className="max-w-300 mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 pt-7">
         <p className="text-[11px] text-white/20 tracking-wide">
           © {currentYear} Élume Décor. All rights reserved.
         </p>

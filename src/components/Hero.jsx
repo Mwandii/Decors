@@ -15,7 +15,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-175 flex items-center justify-center overflow-hidden">
 
       {/* Background image */}
       <div
@@ -125,7 +125,7 @@ export default function Hero() {
         }}
       >
         <span className="text-white/40 text-[9px] tracking-[4px] uppercase">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/40 to-transparent" />
+        <div className="w-px h-12 bg-linear-to-b from-white/40 to-transparent" />
       </div>
     </section>
   )

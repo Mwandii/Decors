@@ -9,7 +9,7 @@ export default function Services() {
     <section id="services" className="py-20 lg:py-28 px-6 lg:px-16 bg-warmwhite">
 
       {/* Header */}
-      <div className="max-w-[560px] mx-auto text-center mb-16">
+      <div className="max-w-140 mx-auto text-center mb-16">
         <FadeIn>
           <p className="text-[10px] tracking-[4px] uppercase text-gold mb-4 font-medium">
             What We Do
@@ -31,7 +31,7 @@ export default function Services() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5 max-w-[1200px] mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5 max-w-300 mx-auto">
         {SERVICES.map((service, i) => (
           <FadeIn key={service.id} direction="up" delay={i * 80} className="relative overflow-hidden group" threshold={0.1}>
             <div

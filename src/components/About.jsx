@@ -8,13 +8,13 @@ export default function About() {
     <section id="about" className="grid grid-cols-1 lg:grid-cols-2">
 
       {/* Image panel */}
-      <div className="relative overflow-hidden min-h-[400px] lg:min-h-[600px]">
+      <div className="relative overflow-hidden min-h-100 lg:min-h-150">
         <div
           className="absolute inset-0 bg-cover bg-center scale-105 hover:scale-100 transition-transform duration-[1.5s] ease-out"
           style={{ backgroundImage: `url('${image}')` }}
         />
         {/* Subtle dark vignette on right edge for blend */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-dark/20 hidden lg:block" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-dark/20 hidden lg:block" />
       </div>
 
       {/* Content panel */}

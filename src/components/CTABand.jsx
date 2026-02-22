@@ -24,10 +24,10 @@ export default function CTABand() {
       />
 
       {/* Gold decorative lines */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/40 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/40 to-transparent" />
 
-      <div className="relative max-w-[720px] mx-auto">
+      <div className="relative max-w-180 mx-auto">
         <FadeIn direction="none">
           <p className="text-[10px] tracking-[5px] uppercase text-gold-light mb-5 font-medium">
             Let's Create Something Beautiful
@@ -57,7 +57,7 @@ export default function CTABand() {
           >
             {/* Shimmer on hover */}
             <span
-              className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"
+              className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
               style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)' }}
             />
             <span className="relative">Start Planning →</span>

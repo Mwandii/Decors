@@ -28,7 +28,7 @@ export default function Contact() {
       className="py-20 lg:py-28 px-6 lg:px-16 bg-cream"
     >
       <div
-        className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start"
+        className="max-w-300 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start"
       >
 
         {/* Left — info */}
@@ -52,7 +52,7 @@ export default function Contact() {
           {details.map(({ label: l, value }, i) => (
             <FadeIn key={l} delay={280 + i * 80}>
               <div className="flex items-start gap-5 mb-7">
-                <div className="w-10 h-10 border border-border flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-10 h-10 border border-border flex items-center justify-center shrink-0 mt-0.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-gold" />
                 </div>
                 <div>
@@ -146,7 +146,7 @@ export default function Contact() {
                   className="w-full bg-gold text-dark py-4 text-[11px] tracking-[2.5px] uppercase font-medium cursor-pointer border-none hover:bg-gold-light transition-colors duration-300 relative overflow-hidden group"
                 >
                   <span
-                    className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"
+                    className="absolute inset-0 -translate-x-100 group-hover:translate-x-100 transition-transform duration-700"
                     style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)' }}
                   />
                   <span className="relative">Send Inquiry →</span>

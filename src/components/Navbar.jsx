@@ -55,7 +55,7 @@ export default function Navbar() {
           background: 'linear-gradient(to bottom, rgba(26,22,18,0.65), transparent)'
         } : undefined}
       >
-        <div className="max-w-[1300px] mx-auto px-6 lg:px-16 flex items-center justify-between">
+        <div className="max-w-325 mx-auto px-6 lg:px-16 flex items-center justify-between">
 
           {/* Logo */}
           <a
@@ -98,9 +98,9 @@ export default function Navbar() {
             aria-label="Toggle menu"
             className="lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none"
           >
-            <span className={`block w-6 h-px bg-white transition-all duration-300 origin-center ${menuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
+            <span className={`block w-6 h-px bg-white transition-all duration-300 origin-center ${menuOpen ? 'rotate-45 translate-y-1.75' : ''}`} />
             <span className={`block w-6 h-px bg-white transition-all duration-300 ${menuOpen ? 'opacity-0 scale-x-0' : ''}`} />
-            <span className={`block w-6 h-px bg-white transition-all duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+            <span className={`block w-6 h-px bg-white transition-all duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-1.75' : ''}`} />
           </button>
         </div>
       </nav>

@@ -31,7 +31,7 @@ export default function WhyUs() {
 
   return (
     <section id="why-us" className="bg-dark py-20 lg:py-28 px-6 lg:px-16">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="max-w-300 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
         {/* Left — copy */}
         <div>
