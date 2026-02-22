@@ -63,7 +63,7 @@ export default function Navbar() {
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             className="font-display text-2xl tracking-[4px] uppercase text-white no-underline"
           >
-            Élume <span className="text-gold-light">Décor</span>
+            Mwandi's <span className="text-gold-light">Décor</span>
           </a>
 
           {/* Desktop links */}
