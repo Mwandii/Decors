@@ -78,7 +78,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="max-w-300 mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 pt-7">
         <p className="text-[11px] text-white/20 tracking-wide">
-          © {currentYear} Élume Décor. All rights reserved.
+          © {currentYear} Mwandi's Décor. All rights reserved.
         </p>
         <div className="flex gap-6">
           {['Privacy Policy', 'Terms of Service'].map(l => (

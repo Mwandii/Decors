@@ -381,8 +381,8 @@ export const CONTACT = {
   body: 'Fill in the form and we\'ll get back to you within 24 hours with availability and a preliminary quote.',
   details: [
     { label: 'Phone',     value: '+254 700 000 000' },
-    { label: 'Email',     value: 'hello@elumedecor.com' },
-    { label: 'Instagram', value: '@elumedecor' },
+    { label: 'Email',     value: 'hello@mwandisdecor.com' },
+    { label: 'Instagram', value: '@mwandisdecor' },
   ],
   eventTypes: ['Wedding', 'Corporate Event', 'Graduation Party', 'Birthday Party', 'Outdoor Event', 'Other'],
 }
@@ -413,8 +413,8 @@ export const FOOTER = {
       title: 'Contact',
       links: [
         { label: '+254 700 000 000',    href: 'tel:+254700000000' },
-        { label: 'hello@elumedecor.com', href: 'mailto:hello@elumedecor.com' },
-        { label: '@elumedecor',         href: '#' },
+        { label: 'hello@mwandidecor.com', href: 'mailto:hello@mwandisdecor.com' },
+        { label: '@mwandisdecor',         href: '#' },
         { label: 'Nairobi, Kenya',      href: '#' },
       ],
     },
