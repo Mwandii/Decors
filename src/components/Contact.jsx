@@ -1,17 +1,9 @@
 import { useState } from 'react'
-import emailjs      from '@emailjs/browser'
-import FadeIn       from '../animations/FadeIn'
-import { CONTACT }  from '../data/siteData'
+import FadeIn      from '../animations/FadeIn'
+import { CONTACT } from '../data/siteData'
 
-/* ── EmailJS credentials — pulled from .env ──────────────
-   In your project root create a .env file with:
-   VITE_EMAILJS_SERVICE_ID=your_service_id
-   VITE_EMAILJS_TEMPLATE_ID=your_template_id
-   VITE_EMAILJS_PUBLIC_KEY=your_public_key
-──────────────────────────────────────────────────────── */
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+/* ── Paste your Formspree endpoint here ── */
+const FORMSPREE_URL = 'https://formspree.io/f/xnjbovve'
 
 const inputClass =
   'bg-warmwhite border border-border px-4 py-3.5 text-[14px] text-dark font-light outline-none focus:border-gold transition-colors duration-300 w-full'
@@ -21,13 +13,11 @@ const EMPTY_FORM = {
   date: '', guests: '', venue: '', message: '',
 }
 
-/* ── Status can be: 'idle' | 'loading' | 'success' | 'error' ── */
-
 export default function Contact() {
   const { label, heading, headingEm, body, details, eventTypes } = CONTACT
 
-  const [form,   setForm]   = useState(EMPTY_FORM)
-  const [status, setStatus] = useState('idle')
+  const [form,     setForm]     = useState(EMPTY_FORM)
+  const [status,   setStatus]   = useState('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
   const handleChange = (e) =>
@@ -38,24 +28,29 @@ export default function Contact() {
     setStatus('loading')
     setErrorMsg('')
 
-    /* ── Template params — these must match your EmailJS template variables ── */
-    const templateParams = {
-      from_name:   form.name,
-      from_phone:  form.phone,
-      event_type:  form.eventType,
-      event_date:  form.date,
-      guests:      form.guests      || 'Not specified',
-      venue:       form.venue       || 'Not specified',
-      message:     form.message     || 'No additional details provided.',
-      reply_to:    form.phone,       // EmailJS reply-to field
-    }
-
     try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
-      setStatus('success')
-      setForm(EMPTY_FORM)
+      const res = await fetch(FORMSPREE_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          Name:         form.name,
+          Phone:        form.phone,
+          'Event Type': form.eventType,
+          'Event Date': form.date,
+          Guests:       form.guests  || 'Not specified',
+          Venue:        form.venue   || 'Not specified',
+          Message:      form.message || 'No additional details provided.',
+        }),
+      })
+
+      if (res.ok) {
+        setStatus('success')
+        setForm(EMPTY_FORM)
+      } else {
+        throw new Error('Formspree error')
+      }
     } catch (err) {
-      console.error('EmailJS error:', err)
+      console.error('Form error:', err)
       setStatus('error')
       setErrorMsg('Something went wrong. Please try again or contact us directly.')
     }
@@ -110,7 +105,7 @@ export default function Contact() {
         {/* ── Right — form / states ── */}
         <FadeIn direction="left" delay={200}>
 
-          {/* ══ SUCCESS STATE ══ */}
+          {/* SUCCESS */}
           {status === 'success' && (
             <div className="flex flex-col items-center justify-center text-center py-24 gap-5">
               <div
@@ -121,9 +116,7 @@ export default function Contact() {
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </div>
-              <h3 className="font-display text-3xl font-light text-brown">
-                Inquiry Sent!
-              </h3>
+              <h3 className="font-display text-3xl font-light text-brown">Inquiry Sent!</h3>
               <p className="text-muted text-[15px] max-w-xs leading-relaxed">
                 We've received your message and will get back to you within 24 hours.
               </p>
@@ -133,24 +126,19 @@ export default function Contact() {
               >
                 Send another inquiry
               </button>
-              <style>{`
-                @keyframes popIn {
-                  from { transform: scale(0.6); opacity: 0; }
-                  to   { transform: scale(1);   opacity: 1; }
-                }
-              `}</style>
+              <style>{`@keyframes popIn { from{transform:scale(0.6);opacity:0} to{transform:scale(1);opacity:1} }`}</style>
             </div>
           )}
 
-          {/* ══ IDLE / ERROR STATE — show form ══ */}
-          {(status === 'idle' || status === 'loading' || status === 'error') && (
+          {/* FORM */}
+          {status !== 'success' && (
             <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
               {/* Error banner */}
               {status === 'error' && (
                 <div className="sm:col-span-2 flex items-start gap-3 border border-red-200 bg-red-50 px-4 py-3">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4 text-red-400 shrink-0 mt-0.5">
-                    <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                   </svg>
                   <p className="text-[13px] text-red-600 leading-relaxed">{errorMsg}</p>
                 </div>
@@ -158,9 +146,7 @@ export default function Contact() {
 
               {/* Name */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Your Name *
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Your Name *</label>
                 <input
                   name="name" required value={form.name} onChange={handleChange}
                   placeholder="e.g. Amara Johnson"
@@ -171,9 +157,7 @@ export default function Contact() {
 
               {/* Phone */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Phone Number *
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Phone Number *</label>
                 <input
                   name="phone" required value={form.phone} onChange={handleChange}
                   placeholder="+254 700 000 000" type="tel"
@@ -184,9 +168,7 @@ export default function Contact() {
 
               {/* Event type */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Event Type *
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Event Type *</label>
                 <select
                   name="eventType" required value={form.eventType} onChange={handleChange}
                   disabled={status === 'loading'}
@@ -199,9 +181,7 @@ export default function Contact() {
 
               {/* Event date */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Event Date *
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Event Date *</label>
                 <input
                   name="date" required value={form.date} onChange={handleChange}
                   type="date"
@@ -212,9 +192,7 @@ export default function Contact() {
 
               {/* Guests */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Number of Guests
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Number of Guests</label>
                 <input
                   name="guests" value={form.guests} onChange={handleChange}
                   placeholder="e.g. 150"
@@ -225,9 +203,7 @@ export default function Contact() {
 
               {/* Venue */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Venue / Location
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Venue / Location</label>
                 <input
                   name="venue" value={form.venue} onChange={handleChange}
                   placeholder="e.g. Nairobi, Garden Estate"
@@ -238,9 +214,7 @@ export default function Contact() {
 
               {/* Message */}
               <div className="flex flex-col gap-2 sm:col-span-2">
-                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">
-                  Tell Us About Your Vision
-                </label>
+                <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Tell Us About Your Vision</label>
                 <textarea
                   name="message" value={form.message} onChange={handleChange}
                   placeholder="Describe the theme, colors, or any specific ideas you have in mind..."
@@ -250,31 +224,24 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Submit button */}
+              {/* Submit */}
               <div className="sm:col-span-2">
                 <button
                   type="submit"
                   disabled={status === 'loading'}
                   className="w-full bg-gold text-dark py-4 text-[11px] tracking-[2.5px] uppercase font-medium cursor-pointer border-none hover:bg-gold-light transition-colors duration-300 relative overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {/* Shimmer — only when idle */}
                   {status !== 'loading' && (
                     <span
                       className="absolute inset-0 -translate-x-100 group-hover:translate-x-100 transition-transform duration-700"
                       style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)' }}
                     />
                   )}
-
-                  {/* Loading spinner */}
                   {status === 'loading' ? (
                     <span className="relative flex items-center justify-center gap-3">
-                      <svg
-                        className="w-4 h-4 animate-spin"
-                        viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" strokeWidth="2"
-                      >
-                        <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
-                        <path d="M12 2a10 10 0 0 1 10 10" />
+                      <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" strokeOpacity="0.25"/>
+                        <path d="M12 2a10 10 0 0 1 10 10"/>
                       </svg>
                       Sending…
                     </span>
@@ -284,8 +251,6 @@ export default function Contact() {
                     </span>
                   )}
                 </button>
-
-                {/* Helper text */}
                 <p className="text-[11px] text-muted mt-3 text-center">
                   We'll get back to you within 24 hours.
                 </p>
