@@ -1,33 +1,25 @@
-// api/contact.js
-// Vercel Serverless Function — runs on Node.js, server side only
-// Using CommonJS (require) because Vercel api/ functions expect it
-
-const { Resend } = require('resend')
+import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const OWNER_EMAIL  = 'athanasmwandi5@gmail.com'       // ← change to real owner email
-const SENDER_EMAIL = 'onboarding@resend.dev' // ← change to hello@elumedecor.com once domain is verified
+const OWNER_EMAIL  = 'athanasmwandi5@gmail.com'
+const SENDER_EMAIL = 'onboarding@resend.dev'
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
 
-  // Only accept POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // Pull fields from request body
   const { name, phone, eventType, date, guests, venue, message } = req.body
 
-  // Validate required fields
   if (!name || !phone || !eventType || !date) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
-  // Send via Resend
   try {
     await resend.emails.send({
-      from:    `Élume Décor Website <${SENDER_EMAIL}>`,
+      from:    `Mwandi's Décor Website <${SENDER_EMAIL}>`,
       to:      OWNER_EMAIL,
       subject: `New Inquiry — ${eventType} | ${name}`,
       html:    buildEmailHTML({ name, phone, eventType, date, guests, venue, message }),
