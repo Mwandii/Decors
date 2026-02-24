@@ -1,44 +1,30 @@
 // api/contact.js
-// ─────────────────────────────────────────────────────
-// Vercel Serverless Function
-// Runs on Vercel's servers — never in the browser.
-// Receives form data, validates it, sends email via Resend.
-//
-// Endpoint: POST /api/contact
-// ─────────────────────────────────────────────────────
+// Vercel Serverless Function — runs on Node.js, server side only
+// Using CommonJS (require) because Vercel api/ functions expect it
 
-import { Resend } from 'resend'
+const { Resend } = require('resend')
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-// ── Change these two values ──
-const OWNER_EMAIL  = 'athanasmwandi5@gmail.com'        // where inquiries land
-const SENDER_EMAIL = 'onboarding@resend.dev'  // use this until you have a custom domain
-                                               // once domain is set up: 'hello@elumedecor.com'
+const OWNER_EMAIL  = 'athanasmwandi5@gmail.com'       // ← change to real owner email
+const SENDER_EMAIL = 'onboarding@resend.dev' // ← change to hello@elumedecor.com once domain is verified
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
 
-  // ── 1. Only accept POST requests ──
-  // If someone tries to visit /api/contact in their browser (GET request)
-  // we reject it immediately with 405 Method Not Allowed
+  // Only accept POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // ── 2. Pull data out of the request body ──
-  // Contact.jsx sends JSON — we destructure the fields we expect
+  // Pull fields from request body
   const { name, phone, eventType, date, guests, venue, message } = req.body
 
-  // ── 3. Validate required fields ──
-  // Never trust the frontend alone — always validate on the server too
-  // If required fields are missing, reject with 400 Bad Request
+  // Validate required fields
   if (!name || !phone || !eventType || !date) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
-  // ── 4. Send the email via Resend ──
-  // This is where the private API key is used — server side only
-  // The browser never sees RESEND_API_KEY
+  // Send via Resend
   try {
     await resend.emails.send({
       from:    `Élume Décor Website <${SENDER_EMAIL}>`,
@@ -47,30 +33,21 @@ export default async function handler(req, res) {
       html:    buildEmailHTML({ name, phone, eventType, date, guests, venue, message }),
     })
 
-    // ── 5. Success — tell the browser everything went well ──
     return res.status(200).json({ success: true })
 
   } catch (err) {
-    // ── 6. Something went wrong with Resend ──
-    // Log the real error server-side (visible in Vercel logs)
-    // but only send a generic message to the browser
     console.error('Resend error:', err)
     return res.status(500).json({ error: 'Failed to send email. Please try again.' })
   }
 }
 
-// ─────────────────────────────────────────────────────
-// Email HTML template
-// Builds the branded email the owner receives.
-// Kept in the same file to keep things simple.
-// ─────────────────────────────────────────────────────
 function buildEmailHTML({ name, phone, eventType, date, guests, venue, message }) {
   const field = (label, value) => `
     <div style="margin-bottom:24px;">
-      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;margin-bottom:4px;font-family:Georgia,serif;">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;margin-bottom:4px;">
         ${label}
       </div>
-      <div style="font-size:15px;color:#3D2E1E;font-family:Georgia,serif;line-height:1.6;">
+      <div style="font-size:15px;color:#3D2E1E;line-height:1.6;">
         ${value}
       </div>
       <div style="height:1px;background:#DDD5C4;margin-top:16px;"></div>
