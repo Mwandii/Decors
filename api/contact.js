@@ -55,7 +55,7 @@ function buildEmailHTML({ name, phone, eventType, date, guests, venue, message }
 
         <div style="background:#1A1612;padding:36px 40px;">
           <h1 style="color:#C9A84C;font-size:22px;font-weight:300;margin:0;letter-spacing:2px;">
-            Élume Décor
+            Mwandi's Décor
           </h1>
           <p style="color:rgba(255,255,255,0.4);font-size:11px;margin:6px 0 0;letter-spacing:3px;text-transform:uppercase;">
             New Event Inquiry
@@ -82,7 +82,7 @@ function buildEmailHTML({ name, phone, eventType, date, guests, venue, message }
 
         <div style="background:#1A1612;padding:24px 40px;text-align:center;">
           <p style="color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:1px;margin:0;">
-            Submitted via the Élume Décor website
+            Submitted via the Mwandi's Décor website
           </p>
         </div>
 
