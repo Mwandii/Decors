@@ -63,7 +63,7 @@ export default function Navbar() {
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
             className="font-display text-2xl tracking-[4px] uppercase text-white no-underline"
           >
-            Mwandi's <span className="text-gold-light">Décor</span>
+            Grakens <span className="text-gold-light">Events</span>
           </a>
 
           {/* Desktop links */}
