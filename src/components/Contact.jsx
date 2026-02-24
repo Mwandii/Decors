@@ -2,8 +2,17 @@ import { useState } from 'react'
 import FadeIn      from '../animations/FadeIn'
 import { CONTACT } from '../data/siteData'
 
-/* ── Paste your Formspree endpoint here ── */
-const FORMSPREE_URL = 'https://formspree.io/f/xnjbovve'
+// ─────────────────────────────────────────────────────
+//  Contact.jsx — the form
+//
+//  This file only handles:
+//    - Form state (what the user types)
+//    - Sending the data to OUR OWN endpoint /api/contact
+//    - Showing loading / success / error states
+//
+//  It knows nothing about Resend or API keys.
+//  All of that lives in api/contact.js on the server.
+// ─────────────────────────────────────────────────────
 
 const inputClass =
   'bg-warmwhite border border-border px-4 py-3.5 text-[14px] text-dark font-light outline-none focus:border-gold transition-colors duration-300 w-full'
@@ -17,7 +26,7 @@ export default function Contact() {
   const { label, heading, headingEm, body, details, eventTypes } = CONTACT
 
   const [form,     setForm]     = useState(EMPTY_FORM)
-  const [status,   setStatus]   = useState('idle')
+  const [status,   setStatus]   = useState('idle')   // 'idle' | 'loading' | 'success' | 'error'
   const [errorMsg, setErrorMsg] = useState('')
 
   const handleChange = (e) =>
@@ -29,30 +38,42 @@ export default function Contact() {
     setErrorMsg('')
 
     try {
-      const res = await fetch(FORMSPREE_URL, {
+      // POST to our own serverless function at /api/contact
+      // This is a relative URL — it works on localhost AND on Vercel
+      // because Vercel serves both the frontend and the api/ functions
+      // from the same domain.
+      const res = await fetch('/api/contact', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
+
+        // Send exactly the field names the serverless function
+        // is expecting to destructure from req.body
         body: JSON.stringify({
-          Name:         form.name,
-          Phone:        form.phone,
-          'Event Type': form.eventType,
-          'Event Date': form.date,
-          Guests:       form.guests  || 'Not specified',
-          Venue:        form.venue   || 'Not specified',
-          Message:      form.message || 'No additional details provided.',
+          name:      form.name,
+          phone:     form.phone,
+          eventType: form.eventType,
+          date:      form.date,
+          guests:    form.guests,
+          venue:     form.venue,
+          message:   form.message,
         }),
       })
 
+      const data = await res.json()
+
       if (res.ok) {
+        // api/contact.js returned { success: true }
         setStatus('success')
         setForm(EMPTY_FORM)
       } else {
-        throw new Error('Formspree error')
+        // api/contact.js returned an error object
+        throw new Error(data.error || 'Something went wrong')
       }
+
     } catch (err) {
-      console.error('Form error:', err)
+      console.error('Submit error:', err)
       setStatus('error')
-      setErrorMsg('Something went wrong. Please try again or contact us directly.')
+      setErrorMsg(err.message || 'Something went wrong. Please try again or contact us directly.')
     }
   }
 
@@ -105,7 +126,7 @@ export default function Contact() {
         {/* ── Right — form / states ── */}
         <FadeIn direction="left" delay={200}>
 
-          {/* SUCCESS */}
+          {/* ══ SUCCESS ══ */}
           {status === 'success' && (
             <div className="flex flex-col items-center justify-center text-center py-24 gap-5">
               <div
@@ -130,7 +151,7 @@ export default function Contact() {
             </div>
           )}
 
-          {/* FORM */}
+          {/* ══ FORM ══ */}
           {status !== 'success' && (
             <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
@@ -179,7 +200,7 @@ export default function Contact() {
                 </select>
               </div>
 
-              {/* Event date */}
+              {/* Date */}
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] tracking-[2.5px] uppercase text-muted font-medium">Event Date *</label>
                 <input
