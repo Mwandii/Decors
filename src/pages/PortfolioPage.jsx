@@ -17,28 +17,15 @@ export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const navigate = useNavigate()
 
-  /* ── Derive selected item from URL ?event=id ── */
-  const eventId    = searchParams.get('event')
+  const eventId      = searchParams.get('event')
   const selectedItem = eventId
     ? PORTFOLIO_ITEMS.find(i => String(i.id) === String(eventId)) ?? null
     : null
 
-  /* ── Open modal → write to URL ── */
-  const handleSelect = (item) => {
-    setSearchParams({ event: item.id })
-  }
+  const handleSelect = (item) => setSearchParams({ event: item.id })
+  const handleClose  = ()     => setSearchParams({})
 
-  /* ── Close modal → clear URL param ── */
-  const handleClose = () => {
-    setSearchParams({})
-  }
-
-  /* ── Scroll to top on mount ── */
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [])
-
-  /* ── Lock body scroll when modal open ── */
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [])
   useEffect(() => {
     document.body.style.overflow = selectedItem ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -55,7 +42,6 @@ export default function PortfolioPage() {
         className="relative flex items-end px-6 lg:px-16 pb-16 pt-36 overflow-hidden"
         style={{ minHeight: '360px' }}
       >
-        {/* Background */}
         <div
           className="absolute inset-0"
           style={{
@@ -67,12 +53,9 @@ export default function PortfolioPage() {
             backgroundPosition: 'center 30%',
           }}
         />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
 
-        {/* Gold top line */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/50 to-transparent" />
-
-        <div className="relative max-w-300 mx-auto w-full">
-          {/* Back button */}
+        <div className="relative max-w-[1200px] mx-auto w-full">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 text-white/50 text-[11px] tracking-[2px] uppercase mb-8 cursor-pointer bg-transparent border-none hover:text-gold transition-colors duration-300 group"
@@ -83,9 +66,7 @@ export default function PortfolioPage() {
             Back to Home
           </button>
 
-          <p className="text-[10px] tracking-[5px] uppercase text-gold mb-4 font-medium">
-            Our Work
-          </p>
+          <p className="text-[10px] tracking-[5px] uppercase text-gold mb-4 font-medium">Our Work</p>
           <h1
             className="font-display font-light text-white leading-[1.05]"
             style={{ fontSize: 'clamp(40px, 6vw, 80px)' }}
@@ -95,8 +76,6 @@ export default function PortfolioPage() {
           <p className="text-white/50 text-[15px] mt-4 max-w-lg leading-relaxed">
             Every event we've decorated — each one built around a unique vision, a specific space, and a client who trusted us with their moment.
           </p>
-
-          {/* Total count */}
           <div className="flex items-center gap-3 mt-8">
             <div className="w-8 h-px bg-gold" />
             <span className="text-[12px] tracking-[3px] uppercase text-white/40">
@@ -108,9 +87,9 @@ export default function PortfolioPage() {
 
       {/* ── Main content ── */}
       <div className="bg-cream min-h-screen">
-        <div className="max-w-350 mx-auto px-6 lg:px-16 py-16">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-16 py-16">
 
-          {/* ── Filters ── */}
+          {/* Filters */}
           <FadeIn>
             <div className="flex flex-wrap gap-2.5 mb-12">
               {CATEGORIES.map(cat => {
@@ -129,13 +108,9 @@ export default function PortfolioPage() {
                       }`}
                   >
                     {cat}
-                    <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded-sm transition-all duration-300 ${
-                        activeFilter === cat
-                          ? 'bg-white/15 text-white/70'
-                          : 'bg-border text-muted'
-                      }`}
-                    >
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded-sm transition-all duration-300 ${
+                      activeFilter === cat ? 'bg-white/15 text-white/70' : 'bg-border text-muted'
+                    }`}>
                       {count}
                     </span>
                   </button>
@@ -144,7 +119,7 @@ export default function PortfolioPage() {
             </div>
           </FadeIn>
 
-          {/* ── Results label ── */}
+          {/* Results label */}
           <FadeIn delay={80}>
             <p className="text-[12px] tracking-[2px] uppercase text-muted mb-8">
               {activeFilter === 'All'
@@ -154,7 +129,7 @@ export default function PortfolioPage() {
             </p>
           </FadeIn>
 
-          {/* ── Grid ── */}
+          {/* Grid */}
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3 space-y-3">
             {filtered.map((item, i) => (
               <FadeIn
@@ -188,16 +163,11 @@ export default function PortfolioPage() {
             </div>
           )}
 
-          {/* ── Bottom CTA ── */}
+          {/* Bottom CTA */}
           <FadeIn delay={200}>
-            <div
-              className="mt-20 p-12 lg:p-16 text-center relative overflow-hidden"
-              style={{ background: '#1A1612' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/30 to-transparent" />
-              <p className="text-[10px] tracking-[4px] uppercase text-gold mb-4 font-medium">
-                Ready to Create Something?
-              </p>
+            <div className="mt-20 p-12 lg:p-16 text-center relative overflow-hidden" style={{ background: '#1A1612' }}>
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+              <p className="text-[10px] tracking-[4px] uppercase text-gold mb-4 font-medium">Ready to Create Something?</p>
               <h2
                 className="font-display font-light text-white leading-tight mb-4"
                 style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}
@@ -211,10 +181,8 @@ export default function PortfolioPage() {
                 onClick={() => navigate('/#contact', { replace: false })}
                 className="group relative inline-flex items-center gap-3 bg-gold text-dark px-10 py-4 text-[11px] tracking-[2.5px] uppercase font-medium cursor-pointer border-none hover:bg-gold-light transition-colors duration-300 overflow-hidden"
               >
-                <span
-                  className="absolute inset-0 -translate-x-100 group-hover:translate-x-100 transition-transform duration-700"
-                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)' }}
-                />
+                <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)' }} />
                 <span className="relative">Get a Free Quote</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="relative w-4 h-4">
                   <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
@@ -226,7 +194,6 @@ export default function PortfolioPage() {
         </div>
       </div>
 
-      {/* ── Modal — driven by URL param ── */}
       {selectedItem && (
         <PortfolioModal
           item={selectedItem}

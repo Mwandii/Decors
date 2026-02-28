@@ -16,7 +16,6 @@ export default function Portfolio() {
   const [selected, setSelected] = useState(null)
   const navigate   = useNavigate()
 
-  // Always take the first 8 — put your best/most recent first in siteData
   const preview = PORTFOLIO_ITEMS.slice(0, PREVIEW_COUNT)
 
   return (
@@ -76,16 +75,14 @@ export default function Portfolio() {
           ))}
         </div>
 
-        {/* View all — bottom CTA (mobile + desktop) */}
+        {/* View all — bottom CTA */}
         <FadeIn delay={300}>
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={() => navigate('/portfolio')}
               className="group relative flex items-center gap-3 border border-dark text-dark px-10 py-4 text-[11px] tracking-[2.5px] uppercase font-medium cursor-pointer bg-transparent hover:bg-dark hover:text-white transition-all duration-300 overflow-hidden"
             >
-              <span
-                className="absolute inset-0 bg-dark -translate-x-100 group-hover:translate-x-0 transition-transform duration-400 -z-10"
-              />
+              <span className="absolute inset-0 bg-dark translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-400 -z-10" />
               View All {PORTFOLIO_ITEMS.length} Events →
             </button>
             <span className="text-[12px] text-muted">
