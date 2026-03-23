@@ -82,7 +82,7 @@ export default function Portfolio() {
               onClick={() => navigate('/portfolio')}
               className="group relative flex items-center gap-3 border border-dark text-dark px-10 py-4 text-[11px] tracking-[2.5px] uppercase font-medium cursor-pointer bg-transparent hover:bg-dark hover:text-white transition-all duration-300 overflow-hidden"
             >
-              <span className="absolute inset-0 bg-dark translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-400 -z-10" />
+              <span className="absolute inset-0 bg-dark -translate-x-full group-hover:translate-x-0 transition-transform duration-400 -z-10" />
               View All {PORTFOLIO_ITEMS.length} Events →
             </button>
             <span className="text-[12px] text-muted">
