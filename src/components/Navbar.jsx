@@ -2,24 +2,21 @@ import { useState, useEffect } from 'react'
 import { NAV_LINKS } from '../data/siteData'
 
 export default function Navbar() {
-  const [scrolled,     setScrolled]     = useState(false)
-  const [menuOpen,     setMenuOpen]      = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
 
-  /* ── Scroll detection ── */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* ── Lock body scroll when mobile menu is open ── */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  /* ── Active section highlight ── */
   useEffect(() => {
     const ids = NAV_LINKS.map(l => l.href.replace('#', ''))
     const observer = new IntersectionObserver(
@@ -35,6 +32,13 @@ export default function Navbar() {
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
+  }, [])
+
+  /* ── Close menu on resize to desktop ── */
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 1024) setMenuOpen(false) }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
   }, [])
 
   const handleNavClick = (href) => {
@@ -55,13 +59,13 @@ export default function Navbar() {
           background: 'linear-gradient(to bottom, rgba(26,22,18,0.65), transparent)'
         } : undefined}
       >
-        <div className="max-w-325 mx-auto px-6 lg:px-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 flex items-center justify-between">
 
           {/* Logo */}
-          <a
-            href="#"
+          
+          <a  href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-            className="font-display text-2xl tracking-[4px] uppercase text-white no-underline"
+            className="font-display text-lg sm:text-2xl tracking-[2px] sm:tracking-[4px] uppercase text-white no-underline shrink-0"
           >
             Grakens <span className="text-gold-light">Events</span>
           </a>
@@ -96,11 +100,11 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen(prev => !prev)}
             aria-label="Toggle menu"
-            className="lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none"
+            className="lg:hidden flex flex-col justify-center gap-[5px] w-8 h-8 cursor-pointer bg-transparent border-none p-1"
           >
-            <span className={`block w-6 h-px bg-white transition-all duration-300 origin-center ${menuOpen ? 'rotate-45 translate-y-1.75' : ''}`} />
-            <span className={`block w-6 h-px bg-white transition-all duration-300 ${menuOpen ? 'opacity-0 scale-x-0' : ''}`} />
-            <span className={`block w-6 h-px bg-white transition-all duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-1.75' : ''}`} />
+            <span className={`block w-6 h-[1.5px] bg-white transition-all duration-300 origin-center ${menuOpen ? 'rotate-45 translate-y-[6.5px]' : ''}`} />
+            <span className={`block w-6 h-[1.5px] bg-white transition-all duration-300 ${menuOpen ? 'opacity-0 scale-x-0' : ''}`} />
+            <span className={`block w-6 h-[1.5px] bg-white transition-all duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-[6.5px]' : ''}`} />
           </button>
         </div>
       </nav>
@@ -111,14 +115,13 @@ export default function Navbar() {
           menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
-        {/* Decorative gold line */}
         <div className="w-px h-16 bg-gold/40 mb-4" />
 
         {NAV_LINKS.map(({ label, href }, i) => (
           <button
             key={label}
             onClick={() => handleNavClick(href)}
-            className="font-display text-4xl font-light text-white/80 hover:text-gold-light transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="font-display text-3xl sm:text-4xl font-light text-white/80 hover:text-gold-light transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionDelay: menuOpen ? `${i * 60}ms` : '0ms' }}
           >
             {label}
